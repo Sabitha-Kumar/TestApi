@@ -40,12 +40,16 @@ namespace TestApi.Repository
 
             //PK : State
             if (!string.IsNullOrEmpty(entity.State))
-            tasks.Add(table.CreateEntityAsync(entity.ToEntity($"Email-{entity.State}-Email", $"{entity.State}")));
+            tasks.Add(table.CreateEntityAsync(entity.ToEntity($"State-{entity.State}-State", $"{entity.State}")));
 
             await Task.WhenAll(tasks);
             return entity;
         }
 
-
+        public static async Task<Employee> GetByIdAsync(string employeeid)
+        {
+            var table = new AzureTable<Employee>(TableName);
+            return await table.GetEntityByPartitionKeyAndRowKeyAsync($"EmployeeId-{employeeid}", $"{employeeid}");
+        }
     }
 }
